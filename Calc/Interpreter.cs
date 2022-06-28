@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Calc
 {
-    public class Interpreter : IVisitor
+    public class Interpreter : IVisitor, IDisposable
     {
         private readonly Stack<int> _stack = new Stack<int>();
 
         public int Result => _stack.Pop();
 
-        public void Visit(ArithmeticOperation operation)
+        public virtual void Visit(ArithmeticOperation operation)
         {
             var r = _stack.Pop();
             var l = _stack.Pop();
@@ -35,9 +35,12 @@ namespace Calc
             }
         }
 
-        public void Visit(Constant constant)
+        public virtual void Visit(Constant constant)
         {
             _stack.Push(constant.Value);
         }
+
+        public void Dispose()
+        { }
     }
 }
